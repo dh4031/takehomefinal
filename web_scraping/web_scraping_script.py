@@ -45,11 +45,15 @@ for header2_link in other_news:
 	category_link = h2_cool2.get("href") #getting the title links
 #combination of the base url at the top and the category link since they do not provide the link for me
 	requesting_link = base_url + category_link 
+	print requesting_link
+
+#was not able to get the link and analyze number of paragraphs, I kept 
+#getting a string buffer error
 #souping the url for analyzing of paragraphs	
 	analyzing_soup = new_soup(requesting_link)
 	other_news_link = analyzing_soup.find("div", class_="db-post-content")
-	for cool in other_news_link:
-		cool2 = cool.find('p').getText()
-		print cool2
-	print h2_cool2.string.strip() + requesting_link
+	for paragraph in other_news_link:
+		paragraph_beta = paragraph.find('p')
+#		print paragraph_beta
+#	print paragraph_beta.strip() + requesting_link
 
