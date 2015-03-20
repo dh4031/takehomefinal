@@ -1,22 +1,53 @@
 from bs4 import BeautifulSoup
+import urllib2
+from urllib2 import urlopen
+import requests
 
-soup = BeautifulSoup(open("avclub.html"))
-soup2 = BeautifulSoup(open("bruin.html"))
+#created function for analyzing each link
+def new_soup(url):
+	link_url = urlopen(url).read()
+	return BeautifulSoup(link_url, "lxml")
 
-news_pane = soup2.find("div", class_="medium-8 columns section-left")
-main_news = news_pane.find_all("div", class_="db-story-c1")
-other_news = news_pane.find_all("div", class_="row db-list")
+start_url = urllib2.urlopen('http://dailybruin.com/category/news/') #goes online to request the page
+base_url = 'http://dailybruin.com' #this is the formula to concantenate the category link later on
+soup2 = BeautifulSoup(start_url) #analyze soup
 
+news_pane = soup2.find("div", class_="medium-8 columns section-left") #entire news pane
+#this is specifically for #1 article since it is different than the others
+main_news = soup2.find_all("div", class_="db-story-c1")
+#this is for the rest of the titles on the page
+other_news = soup2.find_all("div", class_="row db-list")
+
+#this for loop is specifically for the top article
 for header in main_news:
-	h2_main = header.find("h2")
-	h2_cool = h2_main.a
-	print h2_cool.string.strip()
+	h2_main = header.find("h2") #finding the header
+	h2_final = h2_main.a 
+	print h2_final.string.strip() #only retrieving the title
 
+#this for loop is for the rest of the articles on taht page
 for header2 in other_news:
 	h2_other = header2.find("h2")
-	h2_cool2 = h2_other.a
-	print h2_cool2.string.strip()
+	h2_other_final = h2_other.a
+	print h2_other_final.string.strip()
 
-start_url = requests.get('http://dailybruin.com/category/news/')
-soup3 = BeautifulSoup(start_url.content)
-print start_url
+print "\n" #creating a new line to seperate the two problems given to me
+
+#this for loop is specifically for the top article
+for header_link in main_news:
+	h2_main_link = header_link.find("h2") #finding the header
+	h2_main_link_title = h2_main.a
+	main_category_link = h2_main_link_title.get("href")
+	requesting_main_link = base_url + main_category_link
+
+for header2_link in other_news:
+	h2_other = header2_link.find("h2") #finding the header
+	h2_cool2 = h2_other.a #title
+	category_link = h2_cool2.get("href") #getting the title links
+#combination of the base url at the top and the category link since they do not provide the link for me
+	requesting_link = base_url + category_link 
+#souping the url for analyzing of paragraphs	
+	analyzing_soup = new_soup(requesting_link)
+	other_news_link = analyzing_soup.findall("div")
+	print other_news_link
+	print h2_cool2.string.strip() + requesting_link
+
