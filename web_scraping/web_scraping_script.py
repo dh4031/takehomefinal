@@ -6,7 +6,7 @@ import requests
 #created function for analyzing each link
 def new_soup(url):
 	link_url = urlopen(url).read()
-	return BeautifulSoup(link_url, "lxml")
+	return BeautifulSoup(link_url)
 
 start_url = urllib2.urlopen('http://dailybruin.com/category/news/') #goes online to request the page
 base_url = 'http://dailybruin.com' #this is the formula to concantenate the category link later on
@@ -47,7 +47,9 @@ for header2_link in other_news:
 	requesting_link = base_url + category_link 
 #souping the url for analyzing of paragraphs	
 	analyzing_soup = new_soup(requesting_link)
-	other_news_link = analyzing_soup.findall("div")
-	print other_news_link
+	other_news_link = analyzing_soup.find("div", class_="db-post-content")
+	for cool in other_news_link:
+		cool2 = cool.find('p').getText()
+		print cool2
 	print h2_cool2.string.strip() + requesting_link
 
