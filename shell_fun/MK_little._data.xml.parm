@@ -1,0 +1,6 @@
+<?xml version="1.0" standalone="yes"?> 
+        <beast>
+        <marginalLikelihoodAnalysis fileName="MK_little.out.parm">
+        <likelihoodColumn name="lnL" harmonicOnly="false" bootstrap="true"/>
+        </marginalLikelihoodAnalysis>
+</beast>
